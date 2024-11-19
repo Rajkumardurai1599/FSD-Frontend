@@ -1,13 +1,18 @@
-import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
+import { Avatar, Button, Dropdown, DropdownDivider, Navbar, TextInput } from "flowbite-react";
 import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { FaMoon, FaSun } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { toggleTheme } from "../Redux/Slice/themeSlice";
+
 
 const Header = () => {
   const path = useLocation().pathname;
+  const dispatch=useDispatch();
   const { currentuser } = useSelector((state) => state.user);
+  
+  const {theme} = useSelector((state)=> state.theme);
   return (
     <Navbar className="border-b-2">
       <Link
@@ -37,7 +42,10 @@ const Header = () => {
         <Button
           className="w-15 h-10 hidden sm:inline"
           gradientDuoTone="cyanToBlue"
-        >
+          outline
+          pill
+          onClick = {()=>dispatch(toggleTheme())}
+        > 
           <FaMoon />
         </Button>
         <link to="/login"></link>
@@ -45,17 +53,27 @@ const Header = () => {
           className="w-15 h-10 lg:hidden text-dark"
           gradientDuoTone="cyanToBlue"
         >
+          {theme === "light"? (
+            <FaSun/>
+          ):(
+            <FaMoon/>
+          )}
           <FaMoon />
         </Button>
         {currentuser ? (
           <Dropdown
             arrowIcon={false}
             inline
-            label={<Avatar alt="user" img={currentuser.profilePic} rounded />}
+            label={<Avatar alt="user" img={currentuser.rest.profilePicture} rounded />}
           >
             <Dropdown.Header>
               <span className="black text text-sm">{currentuser.username}</span>
             </Dropdown.Header>
+            <Link to ="/dashboard?tab=profile">
+            <Dropdown.Item>profile</Dropdown.Item>
+            </Link>
+            <DropdownDivider />
+            <Dropdown.Item>Sign out</Dropdown.Item>
           </Dropdown>
         ) : (
           <Link to="/signin">
