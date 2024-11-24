@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { app } from "../firebase";
 import { signInFailure, signInsuccess } from "../Redux/Slice/userSlice";
 import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth"
-import { data } from "autoprefixer";
-
 
 
 const OAuth =()=>{
@@ -28,8 +26,7 @@ const OAuth =()=>{
             name:result.user.displayName,
             email:result.user.email,
             profilePic:result.user.photoURL
-        })
-        
+        })      
           
         })
         const data = await res.json();
@@ -42,6 +39,9 @@ const OAuth =()=>{
         dispatch(signInFailure(error.message))
     }
    }
+
+
+   
     return (
         <Button type="button" gradientDuoTone="cyanToBlue" onClick={handleSubmit}>
         <AiFillGoogleCircle className="w-6 h-6 mr-2"/>
